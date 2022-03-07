@@ -1,6 +1,21 @@
-/**
- * This file is just a silly example to show everything working in the browser.
- * When you're ready to start on your site, clear the file. Happy hacking!
- **/
+import { registerImage } from './lazy.js';
+import { createImageNode } from './utils.js';
 
-console.log('Happy hacking :)')
+// Load all images when page is ready
+const allImages = document.querySelectorAll('img[data-src]');
+allImages.forEach(registerImage);
+
+// Add new images
+const imageContainer = document.querySelector('#images');
+const addButton = document.querySelector('button[type="submit"]');
+addButton.addEventListener('click', async () => {
+  const [node, image] = await createImageNode();
+  registerImage(image);
+  imageContainer.append(node);
+});
+
+// Clean all images
+const clean = document.querySelector("button[type='reset']");
+clean.addEventListener("click", () => {
+  imageContainer.innerHTML = "";
+});
